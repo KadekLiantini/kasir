@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kasir Mini</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header>
+        <h1>🛒 Kasir Mini</h1>
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Cari produk..." />
+        </div>
+      </header>
+
+      <!-- Kategori -->
+      <div class="categories">
+        <button class="category-btn active" data-category="all">Semua</button>
+        <button class="category-btn" data-category="makanan">Makanan</button>
+        <button class="category-btn" data-category="minuman">Minuman</button>
+        <button class="category-btn" data-category="snack">Snack</button>
+      </div>
+
+      <!-- Daftar Produk -->
+      <div class="product-grid" id="productGrid">
+        <!-- Produk akan dimasukkan oleh JavaScript -->
+      </div>
+
+      <!-- Keranjang -->
+      <div class="cart">
+        <h2>Keranjang Belanja (<span id="cartCount">0</span>)</h2>
+        <div class="cart-items" id="cartItems">
+          <!-- Item keranjang akan ditambahkan oleh JS -->
+        </div>
+
+        <div class="cart-total">
+          <strong>Total: Rp <span id="totalAmount">0</span></strong>
+        </div>
+
+        <button class="btn-checkout" id="checkoutBtn">Selesai Transaksi</button>
+      </div>
+    </div>
+
+    <!-- Modal Checkout -->
+    <div class="modal" id="checkoutModal">
+      <div class="modal-content">
+        <h2>Checkout Transaksi</h2>
+        <p><strong>Total Belanja:</strong> Rp <span id="modalTotal">0</span></p>
+
+        <label for="paidAmount">Uang yang Dibayarkan:</label>
+        <input
+          type="number"
+          id="paidAmount"
+          placeholder="Masukkan nominal uang"
+          min="0" />
+
+        <p><strong>Kembalian:</strong> Rp <span id="changeAmount">0</span></p>
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" id="cancelBtn">Batal</button>
+          <button class="btn-confirm" id="confirmBtn">Simpan Transaksi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Button -->
+    <button class="history-btn" id="historyBtn">📋</button>
+
+    <!-- Modal History -->
+    <div class="modal" id="historyModal">
+      <div class="modal-content history-modal">
+        <h2>Riwayat Transaksi</h2>
+        <div class="history-list" id="historyList">
+          <!-- Riwayat akan ditampilkan oleh JS -->
+        </div>
+        <button class="btn-close" id="closeHistoryBtn">Tutup</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
