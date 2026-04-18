@@ -1,60 +1,60 @@
-// Data Produk
+// Data Produk (sesuai permintaan Anda)
 let products = [
   {
     id: 1,
-    name: "Nasi Goreng",
-    price: 15000,
+    name: "Nasi Kuning",
+    price: 10000,
     category: "makanan",
-    img: "https://via.placeholder.com/150x100/FF5733/FFFFFF?text=Nasi+Goreng",
+    img: "asset/nasi-kuning.jpg",
   },
   {
     id: 2,
-    name: "Mie Ayam",
-    price: 12000,
+    name: "Nasi Putih Campur",
+    price: 10000,
     category: "makanan",
-    img: "https://via.placeholder.com/150x100/FF8C00/FFFFFF?text=Mie+Ayam",
+    img: "asset/nasi-putih.jpg",
   },
   {
     id: 3,
-    name: "Es Teh Manis",
+    name: "Es Teh Poci",
     price: 5000,
     category: "minuman",
-    img: "https://via.placeholder.com/150x100/00BFFF/FFFFFF?text=Es+Teh",
+    img: "asset/teh-poci.jpeg",
   },
   {
     id: 4,
     name: "Kopi Susu",
     price: 8000,
     category: "minuman",
-    img: "https://via.placeholder.com/150x100/4A2C00/FFFFFF?text=Kopi+Susu",
+    img: "asset/es-kopi-susu.png",
   },
   {
     id: 5,
-    name: "Keripik Kentang",
+    name: "SuperStar",
     price: 7000,
     category: "snack",
-    img: "https://via.placeholder.com/150x100/FFD700/333?text=Keripik",
+    img: "asset/superstar.png",
   },
   {
     id: 6,
-    name: "Chitato",
+    name: "Top",
     price: 9000,
     category: "snack",
-    img: "https://via.placeholder.com/150x100/FF4500/FFFFFF?text=Chitato",
+    img: "asset/top.png",
   },
   {
     id: 7,
-    name: "Ayam Geprek",
+    name: "Aqua Galon",
     price: 18000,
-    category: "makanan",
-    img: "https://via.placeholder.com/150x100/DC143C/FFFFFF?text=Ayam+Geprek",
+    category: "minuman",
+    img: "asset/aqua-galon.png",
   },
   {
     id: 8,
-    name: "Jus Jeruk",
+    name: "Aqua Botol Tanggung",
     price: 10000,
     category: "minuman",
-    img: "https://via.placeholder.com/150x100/FFA500/FFFFFF?text=Jus+Jeruk",
+    img: "asset/aqua-botol.png",
   },
 ];
 
@@ -70,7 +70,7 @@ function renderProducts(filteredProducts) {
     const card = document.createElement("div");
     card.className = "product-card";
     card.innerHTML = `
-            <img src="${product.img}" alt="${product.name}">
+            <img src="${product.img}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/150x110/cccccc/666666?text=No+Image'">
             <div class="product-info">
                 <h3>${product.name}</h3>
                 <p>Rp ${product.price.toLocaleString("id-ID")}</p>
@@ -92,7 +92,7 @@ function addToCart(product) {
   renderCart();
 }
 
-// Render Keranjang
+// Render Keranjang dengan tombol delete
 function renderCart() {
   const cartItems = document.getElementById("cartItems");
   const cartCount = document.getElementById("cartCount");
@@ -108,10 +108,22 @@ function renderCart() {
     const div = document.createElement("div");
     div.className = "cart-item";
     div.innerHTML = `
-            <span>${item.name} x${item.qty}</span>
-            <span>Rp ${itemTotal.toLocaleString("id-ID")}</span>
+            <div class="cart-item-info">
+                <span>${item.name} × ${item.qty}</span>
+                <span style="display:block; color:#e74c3c;">Rp ${itemTotal.toLocaleString("id-ID")}</span>
+            </div>
+            <button class="delete-btn" data-index="${index}">×</button>
         `;
     cartItems.appendChild(div);
+  });
+
+  // Event delete
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const index = parseInt(this.getAttribute("data-index"));
+      cart.splice(index, 1);
+      renderCart();
+    });
   });
 
   cartCount.textContent = cart.length;
@@ -174,18 +186,16 @@ document.getElementById("confirmBtn").addEventListener("click", () => {
 
   alert("✅ Transaksi berhasil disimpan!");
 
-  // Reset
   cart = [];
   renderCart();
   document.getElementById("checkoutModal").style.display = "none";
 });
 
-// Batal Checkout
 document.getElementById("cancelBtn").addEventListener("click", () => {
   document.getElementById("checkoutModal").style.display = "none";
 });
 
-// Tampilkan Riwayat
+// History
 document.getElementById("historyBtn").addEventListener("click", () => {
   renderHistory();
   document.getElementById("historyModal").style.display = "flex";
@@ -201,7 +211,7 @@ function renderHistory() {
 
   if (transactions.length === 0) {
     historyList.innerHTML =
-      '<p style="text-align:center; color:#777;">Belum ada transaksi</p>';
+      '<p style="text-align:center; color:#777; padding:20px;">Belum ada transaksi</p>';
     return;
   }
 
@@ -209,7 +219,7 @@ function renderHistory() {
     let itemsHTML = t.items
       .map(
         (item) =>
-          `<div>${item.name} x${item.qty} - Rp ${(item.price * item.qty).toLocaleString("id-ID")}</div>`,
+          `<div style="margin:4px 0;">${item.name} ×${item.qty} - Rp ${(item.price * item.qty).toLocaleString("id-ID")}</div>`,
       )
       .join("");
 
@@ -235,26 +245,22 @@ document.querySelectorAll(".category-btn").forEach((btn) => {
     btn.classList.add("active");
 
     const category = btn.getAttribute("data-category");
-
     let filtered = products;
     if (category !== "all") {
       filtered = products.filter((p) => p.category === category);
     }
-
     renderProducts(filtered);
   });
 });
 
-// Search Functionality
+// Search
 document.getElementById("searchInput").addEventListener("input", function () {
   const searchTerm = this.value.toLowerCase().trim();
-
   const filtered = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm),
   );
-
   renderProducts(filtered);
-});
+}); 
 
-// Inisialisasi Awal
+// Inisialisasi
 renderProducts(products);
